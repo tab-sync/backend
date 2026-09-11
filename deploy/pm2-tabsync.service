@@ -1,0 +1,19 @@
+[Unit]
+Description=PM2 process manager for Tab Sync
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=tabsync
+WorkingDirectory=/var/lib/tabsync
+Environment=HOME=/var/lib/tabsync
+Environment=PM2_HOME=/var/lib/tabsync/.pm2
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/pm2 resurrect
+ExecReload=/usr/local/bin/pm2 reload all
+ExecStop=/usr/local/bin/pm2 kill
+
+[Install]
+WantedBy=multi-user.target
